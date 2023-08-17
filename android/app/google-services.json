@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "159590557612",
+    "project_id": "sportquiz-remote-config",
+    "storage_bucket": "sportquiz-remote-config.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159590557612:android:f01ef94c1e623354f83c09",
+        "android_client_info": {
+          "package_name": "com.example.sportquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159590557612-lajgdg6o173v967ps3vu5hb35lsoqsgs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhSUL_yEuhgGOLHEYC_3aFUnLc6OtLiIc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159590557612-lajgdg6o173v967ps3vu5hb35lsoqsgs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

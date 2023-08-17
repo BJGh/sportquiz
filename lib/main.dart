@@ -1,12 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await fetchRemoteConfig();
+  final sharedPreferences = await SharedPreferences.getInstance();
+  final savedUrl = sharedPreferences.getString('savedUrl');
+  if (savedUrl != null) {
+    // Open the saved URL immediately
+    runApp(MyApp(initialUrl: savedUrl));
+  } else {
+    await fetchRemoteConfig();
+    runApp(MyApp());
+  }
+}
+
+Future<void> fetchRemoteConfig() async {
+  final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+
+  // Add default values to Remote Config
+  remoteConfig.setDefaults(<String, dynamic>{
+    'url': 'https://google.com',
+  });
+
+  try {
+    // Fetch remote config values and activate them
+    await remoteConfig.fetchAndActivate();
+
+    // Save the URL locally
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final url = remoteConfig.getString('url');
+    await sharedPreferences.setString('savedUrl', url);
+  } catch (e) {
+    // Handle any errors during fetch or activation
+    print('Error fetching remote config: $e');
+  }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String? initialUrl;
+  //const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, this.initialUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +61,12 @@ class MyApp extends StatelessWidget {
 }
 
 class MainView extends StatefulWidget {
-  MainView({Key? key}) : super(key: key);
+  final String? initialUrl;
+
+  MainView({Key? key, this.initialUrl}) : super(key: key);
+
   @override
-  State<MainView> createState() => _MainViewState();
+  _MainViewState createState() => _MainViewState();
 }
 
 class _MainViewState extends State<MainView> {
@@ -52,8 +94,9 @@ class _MainViewState extends State<MainView> {
                 child: Stack(
                   children: [
                     InAppWebView(
-                      initialUrlRequest:
-                          URLRequest(url: Uri.parse('https://bjgh.github.io/')),
+                      initialUrlRequest: URLRequest(
+                          url: Uri.parse(
+                              widget.initialUrl ?? 'https://bjgh.github.io/')),
                       initialOptions: InAppWebViewGroupOptions(
                         crossPlatform: InAppWebViewOptions(
                           useShouldOverrideUrlLoading: true,

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>159590557612-h8ss0ohiej02knrd2c9sd26bfda7skq2.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.159590557612-h8ss0ohiej02knrd2c9sd26bfda7skq2</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAidVJqQIsbRuAlZN89ijZ9PWhCMlJrJZw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>159590557612</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.sportquiz</string>
+	<key>PROJECT_ID</key>
+	<string>sportquiz-remote-config</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sportquiz-remote-config.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:159590557612:ios:cecfbfcd07fbc271f83c09</string>
+</dict>
+</plist>
