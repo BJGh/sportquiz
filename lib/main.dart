@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -16,11 +15,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:     MainView(),
+      home: MainView(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
+
 class MainView extends StatefulWidget {
   MainView({Key? key}) : super(key: key);
   @override
@@ -42,36 +42,44 @@ class _MainViewState extends State<MainView> {
       child: Scaffold(
         body: WillPopScope(
           onWillPop: onBackPressed,
-          child: Column(
+          child: ListView(
+            scrollDirection: Axis.horizontal,
             children: [
-              Expanded(
-                child: Stack(children: [
-                  InAppWebView(
-                    initialUrlRequest: URLRequest(url: Uri.parse('https://bjgh.github.io/')),
-                    initialOptions: InAppWebViewGroupOptions(
-                      crossPlatform: InAppWebViewOptions(
-                        useShouldOverrideUrlLoading: true,
-                        javaScriptCanOpenWindowsAutomatically: true,
+              Container(
+                width: MediaQuery.of(context)
+                    .size
+                    .width, // Set width to fit the entire screen
+                child: Stack(
+                  children: [
+                    InAppWebView(
+                      initialUrlRequest:
+                          URLRequest(url: Uri.parse('https://bjgh.github.io/')),
+                      initialOptions: InAppWebViewGroupOptions(
+                        crossPlatform: InAppWebViewOptions(
+                          useShouldOverrideUrlLoading: true,
+                          javaScriptCanOpenWindowsAutomatically: true,
+                        ),
                       ),
+                      onWebViewCreated: (controller) {
+                        _webViewController = controller;
+                      },
+                      onProgressChanged: (controller, progress) {
+                        setState(() {
+                          this.progress = progress / 100;
+                        });
+                      },
                     ),
-                    onWebViewCreated: (controller) {
-                      _webViewController = controller;
-                    },
-                    onProgressChanged: (controller, progress) {
-                      setState(() {
-                        this.progress = progress / 100;
-                      });
-                    },
-                  ),
-                  progress < 1.0
-                      ? Center(
-                      child: CircularProgressIndicator(
-                        value: progress,
-                        color: Color.fromARGB(255, 54, 244, 177),
-                        strokeWidth: 2,
-                      ))
-                      : Container(),
-                ]),
+                    progress < 1.0
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              value: progress,
+                              color: Color.fromARGB(255, 54, 244, 177),
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
               ),
             ],
           ),
