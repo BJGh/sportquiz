@@ -18,6 +18,8 @@ dependencies:
   firebase_core: ^2.15.0
   firebase_remote_config: ^4.2.4
   shared_preferences: ^2.0.10
+  http: ^0.13.5
+  html_unescape: ^2.0.0
 
 dev_dependencies:
   flutter_test:
