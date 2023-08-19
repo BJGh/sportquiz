@@ -3,6 +3,7 @@ import 'package:sportquiz/models/category.dart';
 import 'package:sportquiz/models/question.dart';
 import 'package:sportquiz/screens/quiz_finished.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:flutter/painting.dart';
 
 class QuizPage extends StatefulWidget {
   final List<Question> questions;
@@ -33,97 +34,104 @@ class _QuizPageState extends State<QuizPage> {
     }
 
     return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        key: _key,
-        appBar: AppBar(
-          title: Text(widget.category!.name),
-          elevation: 0,
-        ),
-        body: Stack(
-          children: <Widget>[
-            ClipPath(
-              child: Container(
-                decoration:
-                    BoxDecoration(color: Theme.of(context).primaryColor),
-                height: 200,
+        onWillPop: _onWillPop,
+        child: Scaffold(
+          key: _key,
+          appBar: AppBar(
+            title: Text(widget.category!.name),
+            elevation: 0,
+            backgroundColor: Colors.amber,
+          ),
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/background.png"),
+                fit: BoxFit.cover,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  Row(
+            child: Stack(
+              children: <Widget>[
+                ClipPath(
+                  child: Container(
+                    height: 200,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
                     children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.white70,
-                        child: Text("${_currentIndex + 1}"),
+                      Row(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundColor: Colors.white70,
+                            child: Text("${_currentIndex + 1}"),
+                          ),
+                          SizedBox(width: 16.0),
+                          Expanded(
+                            child: Text(
+                              HtmlUnescape().convert(
+                                  widget.questions[_currentIndex].question!),
+                              softWrap: true,
+                              style: MediaQuery.of(context).size.width > 800
+                                  ? _questionStyle.copyWith(fontSize: 30.0)
+                                  : _questionStyle,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(width: 16.0),
-                      Expanded(
-                        child: Text(
-                          HtmlUnescape().convert(
-                              widget.questions[_currentIndex].question!),
-                          softWrap: true,
-                          style: MediaQuery.of(context).size.width > 800
-                              ? _questionStyle.copyWith(fontSize: 30.0)
-                              : _questionStyle,
+                      SizedBox(height: 20.0),
+                      Card(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ...options.map((option) => RadioListTile(
+                                  title: Text(
+                                    HtmlUnescape().convert("$option"),
+                                    style:
+                                        MediaQuery.of(context).size.width > 800
+                                            ? TextStyle(fontSize: 30.0)
+                                            : null,
+                                  ),
+                                  groupValue: _answers[_currentIndex],
+                                  value: option,
+                                  onChanged: (dynamic value) {
+                                    setState(() {
+                                      _answers[_currentIndex] = option;
+                                    });
+                                  },
+                                )),
+                          ],
                         ),
                       ),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.bottomCenter,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: MediaQuery.of(context).size.width > 800
+                                  ? const EdgeInsets.symmetric(
+                                      vertical: 20.0, horizontal: 64.0)
+                                  : null,
+                            ),
+                            child: Text(
+                              _currentIndex == (widget.questions.length - 1)
+                                  ? "Submit"
+                                  : "Next",
+                              style: MediaQuery.of(context).size.width > 800
+                                  ? TextStyle(fontSize: 30.0)
+                                  : null,
+                            ),
+                            onPressed: _nextSubmit,
+                          ),
+                        ),
+                      )
                     ],
                   ),
-                  SizedBox(height: 20.0),
-                  Card(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ...options.map((option) => RadioListTile(
-                              title: Text(
-                                HtmlUnescape().convert("$option"),
-                                style: MediaQuery.of(context).size.width > 800
-                                    ? TextStyle(fontSize: 30.0)
-                                    : null,
-                              ),
-                              groupValue: _answers[_currentIndex],
-                              value: option,
-                              onChanged: (dynamic value) {
-                                setState(() {
-                                  _answers[_currentIndex] = option;
-                                });
-                              },
-                            )),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.bottomCenter,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: MediaQuery.of(context).size.width > 800
-                              ? const EdgeInsets.symmetric(
-                                  vertical: 20.0, horizontal: 64.0)
-                              : null,
-                        ),
-                        child: Text(
-                          _currentIndex == (widget.questions.length - 1)
-                              ? "Submit"
-                              : "Next",
-                          style: MediaQuery.of(context).size.width > 800
-                              ? TextStyle(fontSize: 30.0)
-                              : null,
-                        ),
-                        onPressed: _nextSubmit,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+                )
+              ],
+            ),
+          ),
+        ));
   }
 
   void _nextSubmit() {

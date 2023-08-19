@@ -1,24 +1,19 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sportquiz/loading.dart';
 import 'package:sportquiz/screens/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final sharedPreferences = await SharedPreferences.getInstance();
-  final savedUrl = sharedPreferences.getString('savedUrl');
-  if (savedUrl != null) {
-    // Open the saved URL immediately
-    runApp(MyApp(initialUrl: savedUrl));
-  } else {
-    runApp(MyApp());
-  }
+  await Firebase.initializeApp();
+  String page = await Loading.nextPage();
+  runApp(
+    MaterialApp(home: page == '' ? HomePage() : MyApp(initialUrl: page)),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Sports',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -65,76 +60,47 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: FutureBuilder<SharedPreferences>(
-        future: SharedPreferences.getInstance(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final sharedPreferences = snapshot.data!;
-            final savedUrl = sharedPreferences.getString('savedUrl');
-            //final savedUrl = null;
-            //final deviceBrand = 'google'; // TODO: Get actual device brand
-
-            if (savedUrl == null) {
-              // Show splash screen if saved URL is empty
-              return HomePage();
-            } else {
-              // Show InAppWebView with URL
-              return Scaffold(
-                body: WillPopScope(
-                  onWillPop: onBackPressed,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context)
-                            .size
-                            .width, // Set width to fit the entire screen
-                        child: Stack(
-                          children: [
-                            InAppWebView(
-                              initialUrlRequest:
-                                  URLRequest(url: Uri.parse('savedUrl')),
-                              initialOptions: InAppWebViewGroupOptions(
-                                crossPlatform: InAppWebViewOptions(
-                                  useShouldOverrideUrlLoading: true,
-                                  javaScriptCanOpenWindowsAutomatically: true,
-                                  javaScriptEnabled: true,
-                                ),
-                              ),
-                              onWebViewCreated: (controller) {
-                                _webViewController = controller;
-                              },
-                              onProgressChanged: (controller, progress) {
-                                setState(() {
-                                  this.progress = progress / 100;
-                                });
-                              },
-                            ),
-                            progress < 1.0
-                                ? Center(
-                                    child: CircularProgressIndicator(
-                                      value: progress,
-                                      color: Color.fromARGB(255, 54, 244, 177),
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : Container(),
-                          ],
-                        ),
-                      ),
-                    ],
+      child: Scaffold(
+        body: WillPopScope(
+          onWillPop: onBackPressed,
+          child: Container(
+            width: MediaQuery.of(context)
+                .size
+                .width, // Set width to fit the entire screen
+            child: Stack(
+              children: [
+                InAppWebView(
+                  initialUrlRequest:
+                      URLRequest(url: Uri.parse(widget.initialUrl.toString())),
+                  initialOptions: InAppWebViewGroupOptions(
+                    crossPlatform: InAppWebViewOptions(
+                      useShouldOverrideUrlLoading: true,
+                      javaScriptCanOpenWindowsAutomatically: true,
+                      javaScriptEnabled: true,
+                    ),
                   ),
+                  onWebViewCreated: (controller) {
+                    _webViewController = controller;
+                  },
+                  onProgressChanged: (controller, progress) {
+                    setState(() {
+                      this.progress = progress / 100;
+                    });
+                  },
                 ),
-              );
-            }
-          } else {
-            return Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-        },
+                progress < 1.0
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          value: progress,
+                          color: Color.fromARGB(255, 2, 14, 52),
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Container(),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
