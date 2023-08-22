@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "159590557612",
-    "project_id": "sportquiz-remote-config",
-    "storage_bucket": "sportquiz-remote-config.appspot.com"
+    "project_number": "181816544776",
+    "project_id": "dengah-28b0d",
+    "storage_bucket": "dengah-28b0d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:159590557612:android:f01ef94c1e623354f83c09",
+        "mobilesdk_app_id": "1:181816544776:android:17f00d831b40ff2766cbbd",
         "android_client_info": {
-          "package_name": "com.example.sportquiz"
+          "package_name": "dengah.hol.appuol"
         }
       },
       "oauth_client": [
         {
-          "client_id": "159590557612-lajgdg6o173v967ps3vu5hb35lsoqsgs.apps.googleusercontent.com",
+          "client_id": "181816544776-c9r26k8k51e52ncru88jrq59dvcmss00.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDhSUL_yEuhgGOLHEYC_3aFUnLc6OtLiIc"
+          "current_key": "AIzaSyAAVZbNsTgaGc2Cbw6zee--hQbNvlUyQAE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "159590557612-lajgdg6o173v967ps3vu5hb35lsoqsgs.apps.googleusercontent.com",
+              "client_id": "181816544776-c9r26k8k51e52ncru88jrq59dvcmss00.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

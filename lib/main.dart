@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sports',
+      title: 'Hollywood',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -59,7 +59,7 @@ class _MainViewState extends State<MainView> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return SafeArea( 
       child: Scaffold(
         body: WillPopScope(
           onWillPop: onBackPressed,

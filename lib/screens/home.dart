@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('Sports Quiz Game',
+                  Text('Hollywood',
                       style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
